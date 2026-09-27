@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Materiais fornecidos como fonte de verdade, mantidos fora do versionamento.
+SPEC.md
+docs/
+tasks/

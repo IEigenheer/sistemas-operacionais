@@ -34,3 +34,12 @@ class Event:
         if not isinstance(self.type, EventType):
             raise TypeError("event type must be an EventType")
         object.__setattr__(self, "payload", MappingProxyType(dict(self.payload)))
+
+
+@dataclass(frozen=True, slots=True)
+class EventRecord:
+    time: int
+    event_type: EventType
+    process_id: str | None
+    thread_id: str | None
+    description: str

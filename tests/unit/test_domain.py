@@ -52,6 +52,14 @@ def test_process_terminates_only_after_all_threads() -> None:
     assert process.all_threads_terminated()
 
 
+def test_process_cannot_be_terminated_before_all_threads() -> None:
+    thread = make_thread()
+    process = Process("P1", 0, 1, [thread])
+    process.transition_to(State.READY)
+    with pytest.raises(InvalidStateTransition, match="all threads"):
+        process.transition_to(State.TERMINATED)
+
+
 @pytest.mark.parametrize("bursts", [[], [0], [-1], [1.5]])
 def test_invalid_cpu_bursts_are_rejected(bursts: list[object]) -> None:
     with pytest.raises((TypeError, ValueError)):

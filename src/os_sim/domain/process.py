@@ -1,7 +1,12 @@
 from collections.abc import Iterable
 
 from .pcb import PCB
-from .state import PROCESS_TRANSITIONS, State, validate_transition
+from .state import (
+    PROCESS_TRANSITIONS,
+    InvalidStateTransition,
+    State,
+    validate_transition,
+)
 from .thread import Thread
 
 
@@ -75,6 +80,10 @@ class Process:
     def transition_to(self, state: State) -> None:
         if not isinstance(state, State):
             raise TypeError("state must be a State")
+        if state is State.TERMINATED and not self.all_threads_terminated():
+            raise InvalidStateTransition(
+                "a process can terminate only after all threads terminate"
+            )
         validate_transition(self.state, state, PROCESS_TRANSITIONS)
         self._pcb._set_state(state)
 
